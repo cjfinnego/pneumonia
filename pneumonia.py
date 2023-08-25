@@ -7,7 +7,9 @@ Original file is located at
     https://colab.research.google.com/drive/1O5_2z7vXHVHkqBm2kOes4K7ENsH9cTpP
 """
 
+import logging
 import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -26,11 +28,13 @@ from sklearn.metrics import confusion_matrix
 # dataset_path = "/content/drive/MyDrive/chest_xray"
 
 # Set the parameters for the CNN
-
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger("pneumonia")
 
 # Load the dataset
-def prepare_data():
-    dataset_path = 'Data'
+
+
+def prepare_data(dataset_path="data"):
     batch_size = 32
     try:
         train_dir = os.path.join(dataset_path, "train")
@@ -62,7 +66,7 @@ def prepare_data():
             class_mode='binary'
         )
     except Exception as e:
-        print("Error preparing training dataset: " + str(e))
+        logger.warning("Error preparing training dataset: " + str(e))
     try:
         val_dir = os.path.join(dataset_path, "val")
         val_normal_dir = os.path.join(val_dir, "NORMAL")
@@ -81,7 +85,7 @@ def prepare_data():
             class_mode='binary'
         )
     except Exception as e:
-        print("Error preparing validation dataset: " + str(e))
+        logger.warning("Error preparing validation dataset: " + str(e))
     test_dir = os.path.join(dataset_path, "test")
 
     test_normal_dir = os.path.join(test_dir, "NORMAL")
@@ -169,7 +173,7 @@ def evaluate_model(model):
     """
     test_generator = prepare_data()
     metrics = model.evaluate(test_generator, return_dict=True)
-    print("Metrics", metrics)
+    logger.info("Metrics", metrics)
     precision = metrics['precision']
     recall = metrics['recall']
     f1 = 2 * precision * recall/(precision + recall)
@@ -177,7 +181,7 @@ def evaluate_model(model):
     predictions = model.predict(test_generator)
     y_true = test_generator.classes  # true predictions
     logits = np.where(predictions > 0.5, 1, 0)
-    confusion_matrix(y_true, logits)
+    logger.info(confusion_matrix(y_true, logits))
 # f1
 
 # !du -sh /content/drive/MyDrive/model_e5.h5
