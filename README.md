@@ -6,13 +6,11 @@
   - add logging
   - update return statements
 
-- Update the function, prepare_data, to take into argumnt and use the absolute path
-- Mount the image into the container and test a single image prediction to see if the code runs. here
+- Mount the image into the container and test a single image prediction to see if the code runs here
 - Add service code using fast.api (creates http server to send post requests)
 - Deploy to AWS (ECS, Lambda, SageMaker, EKS); may have to make slight modifications depending on service used.
 - Will attempt ECS, Lambda, SageMaker, and EKS in that order for simplicity
-- Python code to download image and model parameters from google drive (manually download model parameters and put them in porject folder for local testing then update code for local files instead of google drive)
-- update create_model function to load the parameters from the data directory
+- Python code to download image and model parameters from google drive (manually download model parameters and put them in project folder for local testing then update code for local files instead of google drive)
 
 # Dataset
 

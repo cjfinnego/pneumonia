@@ -12,6 +12,7 @@ import os
 
 import numpy as np
 import matplotlib.pyplot as plt
+import zipfile
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
@@ -20,21 +21,15 @@ from tensorflow.keras.metrics import Recall, Accuracy, Precision
 from tensorflow.keras.models import load_model
 from sklearn.metrics import confusion_matrix
 
-# from google.colab import drive
-
-# drive.mount('/content/drive')
-
-# Set the path to the dataset
-# dataset_path = "/content/drive/MyDrive/chest_xray"
-
 # Set the parameters for the CNN
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig()
 logger = logging.getLogger("pneumonia")
+logger.level = logging.DEBUG
 
-# Load the dataset
+# preparing data
 
 
-def prepare_data(dataset_path="data"):
+def prepare_data(dataset_path='data'):
     batch_size = 32
     try:
         train_dir = os.path.join(dataset_path, "train")
@@ -143,8 +138,6 @@ def create_model():
                   metrics=['accuracy', Recall(), Precision()])
     return model
 
-# Train the model
-
 
 def train_model(model):
     # TODO get batchsize and dataset generators in here
@@ -192,7 +185,8 @@ def evaluate_model(model):
 # predict = model_2.predict(test_generator)
 
 def main():
-    model = create_model()
+    model = load_model('data/model_e2.h5')
+    logger.debug(model.summary())
     evaluate_model(model)
 
 
